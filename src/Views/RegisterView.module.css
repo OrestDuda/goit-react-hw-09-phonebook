@@ -1,19 +1,24 @@
+.form {
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+}
 .title {
     font-size: 24px;
     font-weight: bold;
     text-align: center;
 }
-
-label {
-    margin: 15px;
+.label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-
-input {
-    margin-left: 10px;
+.input {
+    margin: 10px;
 }
-
-button {
+.register {
     display: block;
-    margin-right: auto;
     margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
 }
