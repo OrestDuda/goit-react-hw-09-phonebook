@@ -4,35 +4,27 @@ import authOperations from "../Redux/Authentification/auth-operations";
 import styles from "./RegisterView.module.css";
 
 export default function RegisterView() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [user, setUser] = useState({ name: "", password: "", email: "" });
 
   const dispatch = useDispatch();
 
-  const handleChangeEmail = (event) => {
-    setEmail(event.currentTarget.value);
-  };
-  const handleChangePassword = (event) => {
-    setPassword(event.currentTarget.value);
-  };
-  const handleChangeName = (event) => {
-    setName(event.currentTarget.value);
+  const handleChange = (event) => {
+    let name = event.currentTarget.name;
+    let value = event.currentTarget.value;
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(
       authOperations.userRegister({
-        name: name,
-        email: email,
-        password: password,
+        name: user.name,
+        email: user.email,
+        password: user.password,
       })
     );
 
-    setPassword("");
-    setEmail("");
-    setName("");
+    setUser({ name: "", password: "", email: "" });
   };
   return (
     <>
@@ -47,8 +39,8 @@ export default function RegisterView() {
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
             required
-            value={name}
-            onChange={handleChangeName}
+            value={user.name}
+            onChange={handleChange}
             className={styles.input}
           />
         </label>
@@ -58,8 +50,8 @@ export default function RegisterView() {
             type="email"
             name="email"
             required
-            value={email}
-            onChange={handleChangeEmail}
+            value={user.email}
+            onChange={handleChange}
             className={styles.input}
           />
         </label>
@@ -69,8 +61,8 @@ export default function RegisterView() {
             type="password"
             name="password"
             required
-            value={password}
-            onChange={handleChangePassword}
+            value={user.password}
+            onChange={handleChange}
             className={styles.input}
           />
         </label>

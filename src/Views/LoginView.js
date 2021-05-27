@@ -4,22 +4,22 @@ import authOperations from "../Redux/Authentification/auth-operations";
 import styles from "./LoginView.module.css";
 
 export default function LoginView() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({ email: "", password: "" });
+
   const dispatch = useDispatch();
 
-  const handleChangeEmail = (event) => {
-    setEmail(event.currentTarget.value);
-  };
-  const handleChangePassword = (event) => {
-    setPassword(event.currentTarget.value);
+  const handleChange = (event) => {
+    let name = event.currentTarget.name;
+    let value = event.currentTarget.value;
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(authOperations.userLogin({ email: email, password: password }));
-    setEmail("");
-    setPassword("");
+    dispatch(
+      authOperations.userLogin({ email: user.email, password: user.password })
+    );
+    setUser({ email: "", password: "" });
   };
 
   return (
@@ -32,8 +32,8 @@ export default function LoginView() {
             type="email"
             name="email"
             required
-            value={email}
-            onChange={handleChangeEmail}
+            value={user.email}
+            onChange={handleChange}
             className={styles.input}
           />
         </label>
@@ -43,8 +43,8 @@ export default function LoginView() {
             type="password"
             name="password"
             required
-            value={password}
-            onChange={handleChangePassword}
+            value={user.password}
+            onChange={handleChange}
             className={styles.input}
           />
         </label>
