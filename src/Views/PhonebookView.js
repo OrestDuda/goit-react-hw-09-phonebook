@@ -6,13 +6,15 @@ import Container from "../Components/Container/Container";
 
 const PhonebookView = () => {
   return (
-    <Container>
-      <h2>Phonebook</h2>
-      <ContactForm />
-      <h2>Contacts</h2>
-      <ContactFilter />
-      <ContactList />
-    </Container>
+    <div>
+      <Container>
+        <h2>Phonebook</h2>
+        <ContactForm />
+        <h2>Contacts</h2>
+        <ContactFilter />
+        <ContactList />
+      </Container>
+    </div>
   );
 };
 

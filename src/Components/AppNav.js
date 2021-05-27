@@ -1,17 +1,22 @@
-import React from "react";
+import React, { Component } from "react";
 import Navigation from "./Navigation/Navigation";
 import UserMenu from "./UserMenu/UserMenu";
 import AuthMenu from "./Navigation/AuthMenu";
-import { useSelector } from "react-redux";
+import { connect } from "react-redux";
 import authSelectors from "../Redux/Authentification/auth-selectors";
 import styles from "./AppNav.module.css";
 
-export default function AppNav() {
-  const isUserLoggedIn = useSelector(authSelectors.getIsLoggedIn);
-  return (
-    <header className={styles.header}>
-      <Navigation />
-      {isUserLoggedIn ? <UserMenu /> : <AuthMenu />}
-    </header>
-  );
+class AppNav extends Component {
+  render() {
+    return (
+      <header className={styles.header}>
+        <Navigation />
+        {this.props.isUserLoggedIn ? <UserMenu /> : <AuthMenu />}
+      </header>
+    );
+  }
 }
+const mapStateToProps = (state) => ({
+  isUserLoggedIn: authSelectors.getIsLoggedIn(state),
+});
+export default connect(mapStateToProps)(AppNav);

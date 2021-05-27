@@ -1,83 +1,73 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import authOperations from "../Redux/Authentification/auth-operations";
 import styles from "./RegisterView.module.css";
 
-export default function RegisterView() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-
-  const dispatch = useDispatch();
-
-  const handleChangeEmail = (event) => {
-    setEmail(event.currentTarget.value);
-  };
-  const handleChangePassword = (event) => {
-    setPassword(event.currentTarget.value);
-  };
-  const handleChangeName = (event) => {
-    setName(event.currentTarget.value);
+class RegisterView extends Component {
+  state = {
+    name: "",
+    email: "",
+    password: "",
   };
 
-  const handleSubmit = (event) => {
+  handleChange = (event) => {
+    const { name, value } = event.currentTarget;
+    this.setState({ [name]: value });
+  };
+
+  handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(
-      authOperations.userRegister({
-        name: name,
-        email: email,
-        password: password,
-      })
-    );
-
-    setPassword("");
-    setEmail("");
-    setName("");
+    this.props.submitted(this.state);
+    this.setState({ name: "", email: "", password: "" });
   };
-  return (
-    <>
-      <p className={styles.title}>Register</p>
 
-      <form onSubmit={handleSubmit} autoComplete="off" className={styles.form}>
-        <label className={styles.label}>
-          Name
-          <input
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-            required
-            value={name}
-            onChange={handleChangeName}
-            className={styles.input}
-          />
-        </label>
-        <label className={styles.label}>
-          Email
-          <input
-            type="email"
-            name="email"
-            required
-            value={email}
-            onChange={handleChangeEmail}
-            className={styles.input}
-          />
-        </label>
-        <label className={styles.label}>
-          Password
-          <input
-            type="password"
-            name="password"
-            required
-            value={password}
-            onChange={handleChangePassword}
-            className={styles.input}
-          />
-        </label>
-        <button type="submit" className={styles.register}>
-          Register
-        </button>
-      </form>
-    </>
-  );
+  render() {
+    return (
+      <>
+        <p className={styles.title}>Register</p>
+
+        <form onSubmit={this.handleSubmit} autoComplete="off">
+          <label>
+            Name
+            <input
+              type="text"
+              name="name"
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+              required
+              value={this.state.name}
+              onChange={this.handleChange}
+            />
+          </label>
+          <label>
+            Email
+            <input
+              type="email"
+              name="email"
+              required
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+          </label>
+          <label>
+            Password
+            <input
+              type="password"
+              name="password"
+              required
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+          </label>
+          <button type="submit">Register</button>
+        </form>
+      </>
+    );
+  }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  submitted: (userInput) => dispatch(authOperations.userRegister(userInput)),
+});
+
+export default connect(null, mapDispatchToProps)(RegisterView);
